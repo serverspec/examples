@@ -1,0 +1,23 @@
+require 'rake'
+require 'rspec/core/rake_task'
+
+desc "Run serverspec to all vm"
+task :spec => "spec:all"
+
+sudo_password = {
+  :foo => 'foo',
+  :bar => 'bar',
+}
+
+namespace :spec do
+  vms = %w( foo bar )
+  task :all => vms.map {|vm| "spec:#{vm}" }
+
+  vms.each do |vm|
+    desc "Run serverspec to #{vm}"
+    RSpec::Core::RakeTask.new(vm.to_sym) do |t|
+      ENV['SUDO_PASSWORD'] = sudo_password[vm.to_sym]
+      t.pattern = "spec/#{vm}/*_spec.rb"
+    end
+  end
+end
