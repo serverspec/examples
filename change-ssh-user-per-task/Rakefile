@@ -1,0 +1,12 @@
+require 'rake'
+require 'rspec/core/rake_task'
+
+RSpec::Core::RakeTask.new(:foo) do |t|
+  ENV['USER'] = 'foo'
+  t.pattern = "spec/foo_spec.rb"
+end
+
+RSpec::Core::RakeTask.new(:bar) do |t|
+  ENV['USER'] = 'bar'
+  t.pattern = "spec/bar_spec.rb"
+end
